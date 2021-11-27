@@ -12,12 +12,10 @@ import { ResponseWrapper } from 'src/app/shared';
 import { Manual } from 'src/app/manual';
 import { Analise } from '../analise';
 import { CommentFuncaoDados } from './comment-funcado-dados.model';
-import { Status } from '../status/status.model';
-import { url } from 'node:inspector';
 
 @Injectable()
 export class FuncaoDadosService {
-    
+
     resourceUrl = environment.apiUrl + '/funcao-dados';
     resourceUrlComment = environment.apiUrl + '/comment/funcao-dados';
     vwresourceUrl = environment.apiUrl + '/vw-funcao-dados';

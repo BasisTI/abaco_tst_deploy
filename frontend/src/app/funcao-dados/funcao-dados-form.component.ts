@@ -1,8 +1,8 @@
-import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren, ViewChild, OnDestroy, OnChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Column, DatatableClickEvent, DatatableComponent, DatatableModule, PageNotificationService } from '@nuvem/primeng-components';
+import { Column, DatatableClickEvent, DatatableComponent, PageNotificationService } from '@nuvem/primeng-components';
 import * as _ from 'lodash';
-import { ConfirmationService, SelectItem, FullCalendar, FileUpload } from 'primeng';
+import { ConfirmationService, SelectItem, FileUpload } from 'primeng';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { Alr } from '../alr/alr.model';
 import { Analise, AnaliseService } from '../analise';
@@ -32,12 +32,8 @@ import { FuncaoDados, TipoFuncaoDados } from './funcao-dados.model';
 import { FuncaoDadosService } from './funcao-dados.service';
 import { BlockUiService } from '@nuvem/angular-base';
 import { Sistema, SistemaService } from '../sistema';
-import { UploadService } from '../upload/upload.service';
 import { Upload } from '../upload/upload.model';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { timeStamp } from 'console';
-import { table } from 'node:console';
-import { DerService } from '../der/der.service';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Utilitarios } from '../util/utilitarios.util';
 
 @Component({
