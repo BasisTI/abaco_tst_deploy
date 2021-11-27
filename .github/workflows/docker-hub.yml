@@ -83,6 +83,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Set Env
+      run: echo "tag=$GITHUB_REF_NAME" >> $GITHUB_ENV
     #- uses: actions/setup-node@v2
     #  name: Instalar nodejs
     #  with:
@@ -104,6 +106,6 @@ jobs:
       with:
         context: frontend/docker/nginx
         push: false
-        tags: basisti/abaco-ui-fake:${{ env.GITHUB_REF_NAME }}, basisti/abaco-ui-fake:latest
+        tags: basisti/abaco-ui-fake:${{ env.tag }}, basisti/abaco-ui-fake:latest
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
