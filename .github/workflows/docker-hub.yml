@@ -83,14 +83,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set env
-      run: |
-        echo $GITHUB_REF_NAME
-        echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-        printenv
-        cat $GITHUB_ENV
-        echo "tag: ${RELEASE_VERSION}"
-        "echo ${GITHUB_REF}"
     #- uses: actions/setup-node@v2
     #  name: Instalar nodejs
     #  with:
@@ -104,14 +96,14 @@ jobs:
     #  with:
     #    username: ${{ secrets.DOCKER_HUB_USERNAME }}
     #    password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-    #- name: Fake tgz
-    #  run: touch frontend/docker/nginx/dist.tar.gz
-    #- name: Build and push Docker image
-    #  id:   docker_build
-    #  uses: docker/build-push-action@v2
-    #  with:
-    #    context: frontend/docker/nginx
-    #    push: true
-    #    tags: basisti/abaco-ui-fake:${{ env.RELEASE_VERSION }}, basisti/abaco-ui-fake:latest
-    #- name: Image digest
-    #  run: echo ${{ steps.docker_build.outputs.digest }}
+    - name: Fake tgz
+      run: touch frontend/docker/nginx/dist.tar.gz
+    - name: Build and push Docker image
+      id:   docker_build
+      uses: docker/build-push-action@v2
+      with:
+        context: frontend/docker/nginx
+        push: false
+        tags: basisti/abaco-ui-fake:${{ env.GITHUB_REF_NAME }}, basisti/abaco-ui-fake:latest
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
