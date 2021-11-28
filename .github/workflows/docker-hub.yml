@@ -60,7 +60,7 @@ jobs:
     - name: Construir War
       run: |
         cd backend/
-        ./mvnw package -DskipTests
+        ./mvnw package -Pprod -DskipTests
         cp target/abaco*.war src/main/docker
     - name: Login to Docker Hub
       uses: docker/login-action@v1
@@ -72,6 +72,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
+        context: backend/src/main/docker
         tags: basisti/abaco-fake:${{ env.tag }}, basisti/abaco-fake:latest
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
