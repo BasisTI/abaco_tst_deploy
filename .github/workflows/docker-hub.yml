@@ -6,98 +6,94 @@ on:
     - "[0-9]+.[0-9]+.[0-9]+"  
 
 jobs:
-  #publish-backend:
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #  - uses: actions/checkout@v2
-  #  - name: Set env
-  #    run: |
-  #      echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-  #      echo "tag: ${RELEASE_VERSION}"
-  #  - uses: actions/setup-java@v2.3.1
-  #    name: Instalar Java
-  #    with:
-  #      java-version: 8
-  #      distribution: 'adopt'
-  #  - name: Configurar settings.xml
-  #    uses: whelk-io/maven-settings-xml-action@v20
-  #    with:
-  #        repositories: >
-  #          [
-  #            {
-  #              "id": "element",
-  #              "name": "Element",
-  #              "url": "https://element.basis.com.br/content/groups/public",
-  #              "releases": {
-  #                "enabled": "true"
-  #              },
-  #              "snapshots": {
-  #                "enabled": "false"
-  #              }
-  #            }
-  #          ]
-  #        plugin_repositories: >
-  #          [
-  #            {
-  #              "id": "element",
-  #              "name": "Element",
-  #              "url": "https://element.basis.com.br/content/groups/public",
-  #              "releases": {
-  #                "enabled": "true"
-  #              },
-  #              "snapshots": {
-  #                "enabled": "false"
-  #              }
-  #            }
-  #          ]
-  #        mirrors: >
-  #          [
-  #            {
-  #              "id": "element",
-  #              "mirrorOf": "*",
-  #              "url": "https://element.basis.com.br/repository/public/"
-  #            }
-  #          ]
-  #        output_file: $HOME/.m2/settings.xml
-  #  - run: |
-  #        cat $HOME/.m2/settings.xml
-  #  - name: Construir War
-  #    run: |
-  #      cd backend/
-  #      ./mvnw package -DskipTests
-  #      cp target/abaco*.war src/main/docker
-  #  - name: Login to Docker Hub
-  #    uses: docker/login-action@v1
-  #    with:
-  #      username: ${{ secrets.DOCKER_HUB_USERNAME }}
-  #      password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-  #  - name: Build and push Docker image
-  #    id:   docker_build
-  #    uses: docker/build-push-action@v2
-  #    with:
-  #      push: true
-  #      tags: basisti/abaco:${{ env.RELEASE_VERSION }}, basisti/abaco:latest
-  #  - name: Image digest
-  #    run: echo ${{ steps.docker_build.outputs.digest }}
+  publish-backend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set Env
+      run: echo "tag=$GITHUB_REF_NAME" >> $GITHUB_ENV
+    - uses: actions/setup-java@v2.3.1
+      name: Instalar Java
+      with:
+        java-version: 8
+        distribution: 'adopt'
+    - name: Configurar settings.xml
+      uses: whelk-io/maven-settings-xml-action@v20
+      with:
+          repositories: >
+            [
+              {
+                "id": "element",
+                "name": "Element",
+                "url": "https://element.basis.com.br/content/groups/public",
+                "releases": {
+                  "enabled": "true"
+                },
+                "snapshots": {
+                  "enabled": "false"
+                }
+              }
+            ]
+          plugin_repositories: >
+            [
+              {
+                "id": "element",
+                "name": "Element",
+                "url": "https://element.basis.com.br/content/groups/public",
+                "releases": {
+                  "enabled": "true"
+                },
+                "snapshots": {
+                  "enabled": "false"
+                }
+              }
+            ]
+          mirrors: >
+            [
+              {
+                "id": "element",
+                "mirrorOf": "*",
+                "url": "https://element.basis.com.br/repository/public/"
+              }
+            ]
+          output_file: $HOME/.m2/settings.xml
+    - name: Construir War
+      run: |
+        cd backend/
+        ./mvnw package -DskipTests
+        cp target/abaco*.war src/main/docker
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    - name: Build and push Docker image
+      id:   docker_build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: basisti/abaco-fake:${{ env.tag }}, basisti/abaco-fake:latest
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
   publish-frontend:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Set Env
       run: echo "tag=$GITHUB_REF_NAME" >> $GITHUB_ENV
-    #- uses: actions/setup-node@v2
-    #  name: Instalar nodejs
-    #  with:
-    #    node-version: '10'
-    #- name: Construir Frontend
-    #  run: | 
-    #    sh frontend/docker/nginx/build.sh
-    #    cd frontend/docker
-    #- name: Login to Docker Hub
-    #  uses: docker/login-action@v1
-    #  with:
-    #    username: ${{ secrets.DOCKER_HUB_USERNAME }}
-    #    password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    - uses: actions/setup-node@v2
+      name: Instalar nodejs
+      with:
+        node-version: '10'
+    - name: Construir Frontend
+      run: | 
+        sh frontend/docker/nginx/build.sh
+        cd frontend/docker
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
     - name: Fake tgz
       run: touch frontend/docker/nginx/dist.tar.gz
     - name: Build and push Docker image
@@ -105,7 +101,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: frontend/docker/nginx
-        push: false
+        push: true
         tags: basisti/abaco-ui-fake:${{ env.tag }}, basisti/abaco-ui-fake:latest
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
