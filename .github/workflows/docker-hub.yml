@@ -87,6 +87,7 @@ jobs:
       name: Instalar nodejs
       with:
         node-version: '10'
+        cache: 'npm'
     - name: Construir Frontend
       run: | 
         sh frontend/docker/nginx/build.sh
