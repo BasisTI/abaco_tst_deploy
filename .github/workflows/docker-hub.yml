@@ -18,6 +18,8 @@ jobs:
         java-version: 8
         distribution: 'adopt'
         cache: 'maven'
+    - name: Imprimir settings.xml
+      run: cat $HOME/.m2/settings.xml
     - name: Configurar settings.xml
       uses: whelk-io/maven-settings-xml-action@v20
       with:
@@ -58,6 +60,8 @@ jobs:
               }
             ]
           output_file: $HOME/.m2/settings.xml
+    - name: Imprimir settings.xml - 2
+      run: cat $HOME/.m2/settings.xml
     - name: Construir War
       run: |
         cd backend/
