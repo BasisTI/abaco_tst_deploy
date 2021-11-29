@@ -59,6 +59,14 @@ jobs:
                 "url": "https://element.basis.com.br/repository/public/"
               }
             ]
+          servers: >
+            [
+              {
+                "id": "github",
+                "username": "${env.GITHUB_ACTOR}",
+                "password": "${env.GITHUB_TOKEN}"
+              }
+            ]
           output_file: $HOME/.m2/settings.xml
     - name: Imprimir settings.xml - 2
       run: cat $HOME/.m2/settings.xml
