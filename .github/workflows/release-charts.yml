@@ -27,7 +27,7 @@ jobs:
       - name: Setup Deps
         run: |
           helm repo add common http://element.basis.com.br/repository/commons-helm/
-          helm repo add kuberntes-charts https://kubernetes-charts.storage.googleapis.com
+          helm repo add stable https://charts.helm.sh/stable
           helm repo update
 
       - name: Run chart-releaser
