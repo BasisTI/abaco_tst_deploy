@@ -1,13 +1,15 @@
 name: abaco
-version: 1.0.1
-appVersion: 1.0.1
-description: abaco
+version: 1.0.2
+appVersion: 2.8.2
+description: Ábaco: Sistema de gestão e execução da Análise de Pontos de Função.
 keywords:
 - ABACO
+- APF
 home: 
-icon: https://rancher.basis.com.br/v1-catalog/templates/Basis:Abaco?image&projectId=1a3742
+icon: https://github.com/BasisTI/abaco/raw/master/img/Logo-Produto-Abaco.png
 sources:
-- https://gogs.basis.com.br/Basis/abaco_codigo_fonte.git
+- https://github.com/BasisTI/abaco
 maintainers:
 - name: Basis
-  email: basis@basis.com.br
+  email: configuracao@basis.com.br
+
